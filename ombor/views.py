@@ -27,10 +27,11 @@ class BolimView(View):
 class MahsulotlarView(View):
     def get(self, request):
         ombor1 = Ombor.objects.get(user=request.user)
-        data = {"mahsulot":Mahsulot.objects.filter()}
+        data = {"mahsulot":Mahsulot.objects.filter(ombor=ombor1)}
         return render(request, "products.html", data)
 
 class ClientView(View):
     def get(self, request):
-        data = {"client":Client.objects.all()}
+        ombor1 = Ombor.objects.get(user=request.user)
+        data = {"client":Client.objects.filter(ombor=ombor1)}
         return render(request, "clients.html", data)
