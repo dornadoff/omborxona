@@ -15,6 +15,7 @@ class Mahsulot(models.Model):
     kelgan_sana = models.DateField()
     miqdor = models.CharField(max_length=100)
     olchov = models.CharField(max_length=100)
+    ombor = models.ForeignKey(Ombor, on_delete=models.CASCADE, null=True)
 
 class Client(models.Model):
     ism = models.CharField(max_length=100)
