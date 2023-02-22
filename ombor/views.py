@@ -27,7 +27,13 @@ class BolimView(View):
 class MahsulotlarView(View):
     def get(self, request):
         ombor1 = Ombor.objects.get(user=request.user)
-        data = {"mahsulot":Mahsulot.objects.filter(ombor=ombor1)}
+        qidirish = request.GET.get("qidirish")
+        if qidirish is None:
+            p1 = Mahsulot.objects.filter(ombor=ombor1)
+        else:
+            p1 = Mahsulot.objects.filter(ombor=ombor1, nom__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, brend__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, kelgan_sana__contains=qidirish)
+
+        data = {"mahsulot":p1}
         return render(request, "products.html", data)
 
     def post(self, request):
@@ -46,7 +52,13 @@ class MahsulotlarView(View):
 class ClientView(View):
     def get(self, request):
         ombor1 = Ombor.objects.get(user=request.user)
-        data = {"client":Client.objects.filter(ombor=ombor1)}
+        qidirish = request.GET.get("qidirish")
+
+        if qidirish is None:
+            c1 = Client.objects.filter(ombor=ombor1)
+        else:
+            c1 = Client.objects.filter(ombor=ombor1, ism__contains=qidirish) or Client.objects.filter(ombor=ombor1, nom__contains=qidirish) or Client.objects.filter(ombor=ombor1, manzil__contains=qidirish) or Client.objects.filter(ombor=ombor1, tel__contains=qidirish)
+        data = {"client":c1}
         return render(request, "clients.html", data)
 
     def post(self, request):

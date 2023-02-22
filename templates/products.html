@@ -164,9 +164,11 @@
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Maxsulot qo'shish</button>
+                    <form method="get"> {% csrf_token %}
                         <div class="text-field">
-                            <input class="rounded-input" type="text" name="username" id="username" placeholder="Qidirish"> <button class="btn fifth">Qidirish</button>
+                            <input class="rounded-input" type="text" name="qidirish" id="username" placeholder="Qidirish"> <button class="btn fifth" type="submit">Qidirish</button>
                         </div>
+                    </form>
                 </div>
             </div>
             <div class="card-body">
@@ -186,7 +188,6 @@
                     <tbody>
                     {% for i in mahsulot %}
                         <tr>
-
                             <th scope="row">{{i.id}}</th>
                             <td>{{ i.nom }}</td>
                             <td>{{ i.brend }}</td>
@@ -196,7 +197,6 @@
                             <td>{{i.olchov }}</td>
                             <td><a href="/ombor/mahsulot/update/{{i.id}}/"><button type="submit" class="btn btn-warning" data-toggle="modal">Tahrirlash</button></a></td>
                             <td><a href="/ombor/mahsulot/delete/{{i.id}}/"><button type="submit" class="btn btn-danger" data-toggle="modal">Ochirish</button></a></td>
-
                         </tr>
                     {% endfor %}
                     </tbody>
