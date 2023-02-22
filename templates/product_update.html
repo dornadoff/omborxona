@@ -42,7 +42,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{% url 'stats' %}">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Products</li>
               <li class="breadcrumb-item"><a href="{% url 'logout' %}">Logout</a></li>
             </ol>
@@ -56,18 +56,21 @@
           <!-- Modal Header -->
 
           <!-- Modal body -->
-          <form action="#" id="edit-product-form">
+          <form id="edit-product-form" method="post"> {% csrf_token %}
               <label for="edit-product-name">Mahsulot nomi:</label>
-              <input type="text" name="name" value="{{product.name}}" placeholder="Mahsulot nomi..." id="edit-product-name" class="form-control" required>
+              <input type="text" name="name" value="{{product.ism}}" placeholder="Mahsulot nomi..." id="edit-product-name" class="form-control" disabled>
                 <br>
               <label for="edit-product-name">Brend nomi:</label>
-              <input type="text" name="brand_name" value="{{product.brand_name}}" placeholder="Brend nomi..." id="edit-product-brend" class="form-control" required>
+              <input type="text" name="brand_name" value="{{product.brend}}" placeholder="Brend nomi..." id="edit-product-brend" class="form-control" disabled>
               <br>
               <label for="edit-product-name">Mahsulot narxi:</label>
-              <input type="number" name="price" value="{{product.price}}" placeholder="Mahsulot narxi..." id="edit-product-price" class="form-control" required>
+              <input type="number" name="price" value="{{product.narx}}" placeholder="Mahsulot narxi..." id="edit-product-price" class="form-control" required>
               <br>
               <label for="edit-product-name">Dona qoldi:</label>
-              <input type="number" name="amount" value="{{product.remainder}}" placeholder="Dona qoldi..." id="edit-product-amount" class="form-control" required>
+              <input type="number" name="amount" value="{{product.miqdor}}" placeholder="Dona qoldi..." id="edit-product-amount" class="form-control" required>
+              <br>
+              <label for="edit-product-name">O'lchovi: </label>
+              <input type="text" name="olchov" value="{{product.olchov}}" placeholder="Olchov..." id="edit-product-olchov" class="form-control" disabled>
               <br>
 
           <!-- Modal footer -->
@@ -83,17 +86,17 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE -->
-<script src="dist/js/adminlte.js"></script>
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<script src="{% static 'dist/js/demo.js' %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
+<script src="{% static 'dist/js/pages/dashboard3.js' %}"></script>
 </body>
 </html>
