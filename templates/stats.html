@@ -20,6 +20,44 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <style>
+        .rounded-input {
+        padding:10px;
+        border-radius:10px;
+}
+   .fifth {
+  border-color: #5183b5;
+  border-radius: 0;
+  color: #5183b5;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  -webkit-transition: color 150ms ease-in-out;
+  transition: color 150ms ease-in-out;
+}
+.fifth:after {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 0;
+  height: 100%;
+  background: #5183b5;
+  z-index: -1;
+  -webkit-transition: width 150ms ease-in-out;
+  transition: width 150ms ease-in-out;
+}
+.fifth:hover {
+  color: #fff;
+}
+.fifth:hover:after {
+  width: 110%;
+}
+
+    </style>
 </head>
 <!--
 `body` tag options:
@@ -127,6 +165,11 @@
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Statistika qo'shish</button>
+                                        <form method="get"> {% csrf_token %}
+                        <div class="text-field">
+                            <input class="rounded-input" type="text" name="qidirish" id="username" placeholder="Qidirish"> <button class="btn fifth" type="submit">Qidirish</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="card-body">

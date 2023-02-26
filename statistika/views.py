@@ -5,10 +5,17 @@ from .models import *
 class StatistikaView(View):
     def get(self, request):
         if request.user.is_authenticated:
+            qidirish = request.GET.get("qidirish")
+            if qidirish is None:
+                st = Statistika.objects.filter(ombor__user=request.user)
+            else:
+                st = Statistika.objects.filter(ombor__user=request.user, mahsulot__nom__contains=qidirish)
+
+
             data = {
-                "statistika":Statistika.objects.filter(ombor__user=request.user),
-                "mahsulot":Mahsulot.objects.filter(ombor__user=request.user),
-                "client":Client.objects.filter(ombor__user=request.user)
+                "statistika": st,
+                "mahsulot": Mahsulot.objects.filter(ombor__user=request.user),
+                "client": Client.objects.filter(ombor__user=request.user)
             }
             return render(request, "stats.html", data)
         return redirect("/")
