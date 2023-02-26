@@ -22,19 +22,23 @@ class Logout(View):
 
 class BolimView(View):
     def get(self, request):
-        return render(request, "bulimlar.html")
+        if request.user.is_authenticated:
+            return render(request, "bulimlar.html")
+        return redirect("/")
 
 class MahsulotlarView(View):
     def get(self, request):
-        ombor1 = Ombor.objects.get(user=request.user)
-        qidirish = request.GET.get("qidirish")
-        if qidirish is None:
-            p1 = Mahsulot.objects.filter(ombor=ombor1)
-        else:
-            p1 = Mahsulot.objects.filter(ombor=ombor1, nom__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, brend__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, kelgan_sana__contains=qidirish)
+        if request.user.is_authenticated:
+            ombor1 = Ombor.objects.get(user=request.user)
+            qidirish = request.GET.get("qidirish")
+            if qidirish is None:
+                p1 = Mahsulot.objects.filter(ombor=ombor1)
+            else:
+                p1 = Mahsulot.objects.filter(ombor=ombor1, nom__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, brend__contains=qidirish) or Mahsulot.objects.filter(ombor=ombor1, kelgan_sana__contains=qidirish)
 
-        data = {"mahsulot":p1}
-        return render(request, "products.html", data)
+            data = {"mahsulot":p1}
+            return render(request, "products.html", data)
+        return redirect("/")
 
     def post(self, request):
         ombor1 = Ombor.objects.get(user=request.user)
@@ -51,15 +55,17 @@ class MahsulotlarView(View):
 
 class ClientView(View):
     def get(self, request):
-        ombor1 = Ombor.objects.get(user=request.user)
-        qidirish = request.GET.get("qidirish")
+        if request.user.is_authenticated:
+            ombor1 = Ombor.objects.get(user=request.user)
+            qidirish = request.GET.get("qidirish")
 
-        if qidirish is None:
-            c1 = Client.objects.filter(ombor=ombor1)
-        else:
-            c1 = Client.objects.filter(ombor=ombor1, ism__contains=qidirish) or Client.objects.filter(ombor=ombor1, nom__contains=qidirish) or Client.objects.filter(ombor=ombor1, manzil__contains=qidirish) or Client.objects.filter(ombor=ombor1, tel__contains=qidirish)
-        data = {"client":c1}
-        return render(request, "clients.html", data)
+            if qidirish is None:
+                c1 = Client.objects.filter(ombor=ombor1)
+            else:
+                c1 = Client.objects.filter(ombor=ombor1, ism__contains=qidirish) or Client.objects.filter(ombor=ombor1, nom__contains=qidirish) or Client.objects.filter(ombor=ombor1, manzil__contains=qidirish) or Client.objects.filter(ombor=ombor1, tel__contains=qidirish)
+            data = {"client":c1}
+            return render(request, "clients.html", data)
+        return redirect("/")
 
     def post(self, request):
         Client.objects.create(
@@ -88,13 +94,19 @@ class ClientDeleteView(View):
 
 class MahsulotUpdateView(View):
     def get(self, request, pk):
-        data = {
-            "product":Mahsulot.objects.get(id=pk)
-        }
-        return render(request, "product_update.html", data)
-
+        if request.user.is_authenticated:
+            if len(Mahsulot.objects.filter(id=pk, ombor__user=request.user)) == 0:
+                return redirect("/ombor/mahsulot/")
+            else:
+                m = Mahsulot.objects.get(id=pk, ombor__user=request.user)
+            data = {
+                "product":m
+            }
+            return render(request, "product_update.html", data)
+        return redirect("/")
     def post(self, request, pk):
-        Mahsulot.objects.filter(id=pk).update(
+        ombor1 = Ombor.objects.get(user=request.user)
+        Mahsulot.objects.filter(id=pk, omobor=ombor1).update(
             narx=request.POST.get("price"),
             miqdor=request.POST.get("amount")
         )
@@ -102,6 +114,11 @@ class MahsulotUpdateView(View):
 
 class ClientUpdateView(View):
     def get(self, request, pk):
+        if request.user.is_authenticated:
+            if len(Client.objects.filter(id=pk, ombor__user=request.user)) == 0:
+                return redirect("/ombor/client/")
+            else:
+                c = Client.objects.get(id=pk, ombor__user=request.user)
         data = {
             "client":Client.objects.get(id=pk)
         }

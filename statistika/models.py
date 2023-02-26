@@ -8,4 +8,5 @@ class Statistika(models.Model):
     sana = models.DateTimeField(auto_now_add=True)
     umumiy_summa = models.PositiveBigIntegerField()
     tolandi = models.PositiveBigIntegerField()
-    nasiya =  models.PositiveBigIntegerField()
+    nasiya = models.PositiveBigIntegerField()
+    ombor = models.ForeignKey(Ombor, on_delete=models.CASCADE, null=True)
